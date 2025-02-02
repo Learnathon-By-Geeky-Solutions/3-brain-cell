@@ -1,8 +1,10 @@
+import {Hero} from "../Public";
+
 const Landing = () => {
   
   return (
     <>
-      Landing Page
+      <Hero/>
     </>
   );
 };
