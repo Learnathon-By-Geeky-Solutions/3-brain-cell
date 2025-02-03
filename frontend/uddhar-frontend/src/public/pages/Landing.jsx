@@ -1,4 +1,4 @@
-import {Hero, PastDisaster, MapSection, LogoScroll} from "../Public";
+import {Hero, PastDisaster, MapSection, LogoScroll, Footer} from "../Public";
 import {ongoingDisaster, organizations} from "../data/Data";
 
 const Landing = () => {
@@ -9,6 +9,7 @@ const Landing = () => {
       <PastDisaster ongoingDisaster={ongoingDisaster}/>
       <MapSection/>
       <LogoScroll organizations={organizations}/>
+      <Footer/>
     </>
   );
 };
