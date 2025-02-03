@@ -20,7 +20,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-around h-screen bg-gradient-to-b from-amber-200 to-gray-100 px-5 max-md:flex-col">
+    <div className="flex items-center justify-around h-screen max-md:h-auto bg-gradient-to-b from-amber-200 to-gray-100 px-5 max-md:flex-col">
       {/* Left: Image Stack */}
       <div className="relative max-md:w-full w-1/2 min-md:min-h-100 h-130 overflow-hidden max-md:min-w-100 mx-10">
         {images.map((img, i) => (
