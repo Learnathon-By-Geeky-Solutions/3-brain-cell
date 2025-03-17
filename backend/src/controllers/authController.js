@@ -6,7 +6,6 @@ const jwtConfig = require('../config/jwtConfig');
 const nodemailer = require('nodemailer');
 const config = require('../config/env');
 
-//email verification 
 const sendVerificationEmail = async (email, code) => {
  
   const transporter = nodemailer.createTransport({
@@ -27,7 +26,6 @@ const sendVerificationEmail = async (email, code) => {
   await transporter.sendMail(mailOptions);
 };
 
-//password reset 
 const sendPasswordResetEmail = async (email, code) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -115,18 +113,16 @@ const verifyEmail = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-   
     if (user.emailVerificationCode !== code) {
       return res.status(400).json({ message: 'Invalid verification code' });
     }
 
-    
     user.emailVerified = true;
     user.emailVerificationCode = null;
     await userRepository.save(user);
 
-    const emailVerificationToken = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: "30m" });
-
+    const emailVerificationToken = jwt.sign({ id: user.userId, email: user.email, role: user.role },
+      process.env.JWT_SECRET,{ expiresIn: "30m" } );
 
     res.status(200).json({
       message: "Email verified successfully. Proceed to complete your profile.",
@@ -186,7 +182,8 @@ const login = async (req, res) => {
       return res.status(403).json({ message: 'Email not verified. Please verify your email before logging in.' });
     }
 
-    const loginToken = jwt.sign({ id: user.id, role: user.role }, jwtConfig.secret, { expiresIn: '1h' });
+    const loginToken = jwt.sign({ id: user.userId, email: user.email, role: user.role },   jwtConfig.secret, { expiresIn: '1h' } );
+    
 
     res.status(200).json({ 
       message:"Login successful!",
