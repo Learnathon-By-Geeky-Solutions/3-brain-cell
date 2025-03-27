@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
+import Registration from "./authentication/pages/Registration";
 import Login from "./authentication/pages/Login";
 import DashboardNavbar from "./shared/components/DashboardNavbar";
 import CoordinatorDashboard from "./coordinator/pages/CoordinatorDashboard";
@@ -32,6 +33,14 @@ const App = () => {
             element={
               <Navbar>
                 <Login />
+              </Navbar>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <Navbar>
+                <Registration />
               </Navbar>
             }
           />

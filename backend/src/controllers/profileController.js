@@ -56,7 +56,7 @@ const completeRegistration = async (req, res) => {
                 website: profileData.website,
                 socialMediaLink: profileData.socialMediaLink,
                 parentOrg: profileData.parentOrg,
-                approval_status: "pending", // Default to pending, admins can change later
+                approval_status: profileData.approval_status,
             });
             await organizationRepository.save(organization);
 
