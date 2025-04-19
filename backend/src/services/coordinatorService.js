@@ -39,7 +39,7 @@ const {
   const savedDisaster = await disasterRepository.save(newDisaster);
   
   
-  const { coordinator: coordinatorData, ...disasterWithoutCoordinator } = savedDisaster;
+  const disasterWithoutCoordinator = (({ coordinator, ...rest }) => rest)(savedDisaster);
   
   let responseDisaster = { ...disasterWithoutCoordinator };
   
@@ -65,14 +65,14 @@ const getDisasters = async (offset, limit) => {
   
     const formattedDisasters = disasters.map(disaster => {
     
-    const { coordinator, ...disasterWithoutCoordinator } = disaster;
+    const disasterWithoutCoordinator = (({ coordinator, ...rest }) => rest)(disaster);
       
-    const coordinatorInfo = coordinator ? {
-        coordinator_id: coordinator.coordinator_id,
-        name: coordinator.user ? coordinator.user.name : null,
-        officialContactNumber: coordinator.officialContactNumber,
-        department: coordinator.department,
-        region: coordinator.region,
+    const coordinatorInfo = disaster.coordinator ? {
+        coordinator_id: disaster.coordinator.coordinator_id,
+        name: disaster.coordinator.user ? disaster.coordinator.user.name : null,
+        officialContactNumber: disaster.coordinator.officialContactNumber,
+        department: disaster.coordinator.department,
+        region: disaster.coordinator.region,
       } : null;
   
       return {
@@ -112,7 +112,7 @@ const getDisasters = async (offset, limit) => {
   
     const updatedDisaster = await disasterRepository.save(disaster);
   
-    const { coordinator: coordinatorData, ...disasterWithoutCoordinator } = updatedDisaster;
+    const disasterWithoutCoordinator = (({ coordinator, ...rest }) => rest)(updatedDisaster);
     
     return disasterWithoutCoordinator;
   };

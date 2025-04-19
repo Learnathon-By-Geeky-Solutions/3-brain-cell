@@ -1,6 +1,7 @@
 const { AppDataSource } = require('../config/database');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const crypto = require('node:crypto');
 const jwtConfig = require('../config/jwtConfig');
 const jwt = require('jsonwebtoken');
 const { UserAlreadyExistsError, InvalidCredentialsError, UserDoesNotExistError, PasswordResetExpiredError } = require('../utils/errors');
@@ -12,7 +13,7 @@ const registerUser = async (data) => {
   const existingUser = await AppDataSource.getRepository(User).findOne({ where: { email } });
   if (existingUser) throw new UserAlreadyExistsError();
 
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const verificationCode = crypto.randomInt(100000, 1000000).toString();
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = AppDataSource.getRepository(User).create({
@@ -47,11 +48,12 @@ const requestForgotPasswordReset = async (email) => {
   const user = await AppDataSource.getRepository(User).findOne({ where: { email } });
   if (!user) throw new UserDoesNotExistError();
 
-  const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const resetCode = crypto.randomInt(100000, 1000000).toString();
   const hashedCode = await bcrypt.hash(resetCode, 10);
 
   user.passwordResetToken = hashedCode;
   user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); 
+
   await AppDataSource.getRepository(User).save(user);
 
   await sendPasswordResetEmail(email, resetCode);

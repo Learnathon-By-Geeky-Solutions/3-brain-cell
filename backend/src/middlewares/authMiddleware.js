@@ -33,7 +33,8 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
+    console.error('JWT verification error:', error);
+    return res.status(401).json({ message: 'Invalid token', error: error.message });
   }
 };
 

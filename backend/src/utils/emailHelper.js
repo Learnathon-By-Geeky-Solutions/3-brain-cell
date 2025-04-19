@@ -5,6 +5,7 @@ const sendVerificationEmail = async (email, code) => {
  
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      secure: true,
       auth: {
         user: config.email.user,      
         pass: config.email.mailpass,  
@@ -30,6 +31,7 @@ const sendVerificationEmail = async (email, code) => {
 const sendPasswordResetEmail = async (email, resetCode) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
+    secure: true,
     auth: {
       user: config.email.user, 
       pass: config.email.mailpass,
