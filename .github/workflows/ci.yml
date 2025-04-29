@@ -64,10 +64,22 @@ jobs:
           ACCUWEATHER_API_URL_FOR_KEY: ${{ secrets.ACCUWEATHER_API_URL_FOR_KEY }}
           ACCUWEATHER_API_URL_FOR_INFO: ${{ secrets.ACCUWEATHER_API_URL_FOR_INFO }}
           DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
+      
+      - name: Debug directory structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Repository contents:"
+          ls -la
+          echo "Backend directory contents:"
+          ls -la backend/
+          echo "Backend src contents:"
+          ls -la backend/src/
 
       # SonarCloud analysis
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5.1.0
+        with:
+          projectBaseDir: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
