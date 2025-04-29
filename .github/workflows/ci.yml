@@ -32,20 +32,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for SonarCloud analysis
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
           cache: "npm"
+          cache-dependency-path: |
+            **/package-lock.json
 
       # Frontend setup
       - name: Install frontend dependencies
-        run: cd frontend/uddhar-frontend && npm install
+        working-directory: frontend/uddhar-frontend
+        run: npm ci
 
       # Backend setup
       - name: Install backend dependencies
-        run: cd backend && npm install
+        working-directory: backend
+        run: npm ci
         env:
           DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
 
@@ -61,6 +67,7 @@ jobs:
 
       # SonarCloud analysis
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          project-base: ./
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
