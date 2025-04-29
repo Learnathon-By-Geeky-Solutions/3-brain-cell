@@ -2,8 +2,6 @@ name: Backend CI Pipeline
 
 on:
   pull_request:
-    branches:
-      - main
     types: [opened, synchronize, reopened]
 
 env:
