@@ -2,6 +2,8 @@ name: Backend CI Pipeline
 
 on:
   pull_request:
+    branches:
+      - main
     types: [opened, synchronize, reopened]
 
 env:
@@ -46,12 +48,12 @@ jobs:
       # Frontend setup
       - name: Install frontend dependencies
         working-directory: frontend/uddhar-frontend
-        run: npm ci
+        run: npm install
 
       # Backend setup
       - name: Install backend dependencies
         working-directory: backend
-        run: npm ci
+        run: npm install
         env:
           DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
 
@@ -67,7 +69,7 @@ jobs:
 
       # SonarCloud analysis
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v5.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
