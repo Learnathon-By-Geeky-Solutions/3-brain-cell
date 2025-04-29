@@ -9,7 +9,7 @@
   .blinking:not(:hover) {
     animation: blinkingBox 2s infinite;
   }
-}
+} 
 
 @keyframes blinkingBox {
   0%, 100% { background-color: #e79a98; }
